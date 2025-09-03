@@ -1,7 +1,11 @@
-FROM alpine:3.21
+FROM debian:Bookworm
 
-RUN apk add nginx
-RUN apk add openssl
+RUN apt -y update
+RUN apt -y install nginx openssl
+RUN apt -y install ufw
+RUN systemctl status nginx
+RUN mkdir -p /etc/nginx/ssl
 
-RUN mkdir -p etc/nginx/ssl
-RUN
+
+
+
