@@ -1,9 +1,10 @@
 FROM debian:bookworm
 
 RUN apt -y update
-RUN apt install mariadb-server mariadb-client-y
+RUN apt install mariadb-server mariadb-client -y
 
-COPY ./conf/mariadb.sh ./mariadb.sh
+COPY ./tools/mariadb.sh ./mariadb.sh
+COPY ./conf/50-server.cnf ./etc/mysql/mariadb.conf.d/50-server.cnf
 
 RUN chmod +x mariadb.sh
 
