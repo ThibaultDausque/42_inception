@@ -1,11 +1,21 @@
 #!/bin/sh
 set -e
 
-echo "Initialisation of MariaDB dawg... 🚀"
+mysqld --user=root --socket=/run/mysqld/mysqld.socket &
 
-until mysql ping -h 127.0.0.1 -u root -p toto >/dev/null; do
-	sleep 1
+echo "⏳ Waiting for MariaDB to create the socket..."
+until [ -S /run/mysqld/mysqld.sock ]; do
+  sleep 1
 done
+echo "✅ Socket found, MariaDB is ready!"
 
-echo "✅ MariaDB is ready, creation of the database..."
+cat > /etc/mysql/init.sql << EOF
+ALTER USER 'root'@'localhost' IDENTIFIED BY ${DB_ADMIN_PASS};
+CREATE DATABASE IF NO EXISTS ${DB_NAME};
+CREATE USER IF NO EXISTS '${DB_USER1}'@'%' IDENTIFIED BY '${DB_USER1_PASS}';
+CREATE USER IF NO EXISTS '${DB_USER2}'@'%' IDENTIFIED BY '${DB_USER2_PASS}';
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER1}' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF
 
+echo "Database created ✅✅✅"
