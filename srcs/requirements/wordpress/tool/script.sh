@@ -15,15 +15,15 @@ if [ ! -f "index.php" ]; then
 	wp core install \
 		--url=$DOMAIN_NAME \
 		--title="Inception" \
-		--admin_user=$WP_ADMIN_NAME \
-		--admin_password=$WP_ADMIN_PASS \
-		--admin_email=$WP_ADMIN_MAIL \
+		--admin_user=$ADMIN_NAME \
+		--admin_password=$ADMIN_PASS \
+		--admin_email=$ADMIN_MAIL \
 		--allow-root
 
 	wp user create \
 		$WP_USER_NAME \
-		$DB_USER_MAIL \
-		--user_pass=$DB_USER_PASS \
+		$WP_USER_MAIL \
+		--user_pass=$WP_USER_PASS \
 		--allow-root
 else
 	echo "Wordpress already installed !"
